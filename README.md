@@ -1,50 +1,60 @@
-# Welcome to your Expo app 👋
+# Music App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Expo Router music player for local device audio on iOS and Android. The app uses `expo-media-library` for song discovery, `expo-av` for playback, and Zustand stores for playback plus library persistence.
 
-## Get started
+## Requirements
 
-1. Install dependencies
+- Node.js 20+
+- npm
+- Expo development build
 
-   ```bash
-   npm install
-   ```
+`expo-media-library` and background audio features are not supported in Expo Go for this project.
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Setup
 
 ```bash
-npm run reset-project
+source ~/.nvm/nvm.sh
+nvm use 20
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Run
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Useful commands:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- `npx expo lint` for ESLint
+- `npx expo prebuild` after `app.json` plugin changes
+- `npm run reset-project` to reset the scaffold
 
-## Join the community
+## Dev Build Notes
 
-Join our community of developers creating universal apps.
+- Use an Expo development build on iOS or Android, not Expo Go.
+- Background audio depends on `UIBackgroundModes: ["audio"]` in [app.json](/Users/pravallika/Documents/Personal/ai-training/music-app/app.json).
+- Lock screen and notification transport controls are a known Expo AV limitation for this app.
+- Android emulator note: this app reads the device media library, so the emulator needs audio files in shared storage before songs appear. Example: `adb push my-song.mp3 /sdcard/Music/`
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Implemented Phase 4 Features
+
+- Persistent liked songs and custom albums saved to `documentDirectory/library-store.json`
+- Like toggle in song rows, now playing, and the song options menu
+- Dedicated [Liked Songs screen](/Users/pravallika/Documents/Personal/ai-training/music-app/app/liked-songs.tsx)
+- Album create, rename, delete, add-song, and remove-song flows
+- Auto-generated system album and artist collections from song metadata with fallback values
+- Queue actions from the song options menu: Play Now, Play Next, Add to Queue
+- Visible shuffle and repeat controls on the Now Playing modal
+
+## Known Limitations
+
+- Expo Go cannot be used for media library playback testing here.
+- `expo-av` supports background playback, but not lock screen or notification controls.
+- Song metadata depends on what `expo-media-library` exposes; extended tags are not available.
+
+## Specs
+
+- [Phase 4 spec](/Users/pravallika/Documents/Personal/ai-training/music-app/specs/phase-4/spec.md)
+- [Phase 4 plan](/Users/pravallika/Documents/Personal/ai-training/music-app/specs/phase-4/plan.md)
+- [Phase 4 tasks](/Users/pravallika/Documents/Personal/ai-training/music-app/specs/phase-4/tasks.md)
